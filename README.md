@@ -3,11 +3,11 @@
 
 #INTRODUCTION:
 Bucketlist is an API created using Flask Framework 
-# Requirements
+### Requirements
 - postgres
 - Postman
 
-# INSTALLATION
+### INSTALLATION
 - Download the repo
 - Download and install [postgres](http://www.postgresql.org/)
 - Create two databases in Postgres `flask` and `bucket_test`
@@ -15,14 +15,14 @@ Bucketlist is an API created using Flask Framework
     - `CREATE DATABASE flask`
     - `CREATE DATABASE bucket_list`
 - At the Terminal cd into the project folder and run the following commands 
- - `pip install -r requirements.txt` to install all dependencies
- - `Python manage.py db init`
- - `python manage.py db migrate`
- - `python manage.py db upgrade`
- - `python api/bucketlist.py` to start the server
+ * `pip install -r requirements.txt` to install all dependencies
+ * `Python manage.py db init`
+ * `python manage.py db migrate`
+ * `python manage.py db upgrade`
+ * `python api/bucketlist.py` to start the server
  
 
-# ENDPOINTS
+### ENDPOINTS
 
 | End Point                                | Functionality                     |
 |------------------------------------------|-----------------------------------|
@@ -39,14 +39,14 @@ Bucketlist is an API created using Flask Framework
 | *DELETE /bucketlists/<id>/items/<item_id> | Delete an item in a bucket list   |
 - NB. * Need login or Authorization Token 
 
-## SETTING UP 
+### SETTING UP 
 - Once the server is runnng, navigate to `http://localhost:5000` using Postman 
 - Click the header tab and set the Header to `content_type: application/jason`
 - Click the body tab and select on the `raw` option 
 - We shall be using this section for most of our requests
 - Json format will be used in sending and recieving request
 
-## Creating Users
+### Creating Users
 
 - Using the `POST` Method on postman 
 - Navigate to `http://localhost:5000/api/users`.
@@ -59,7 +59,7 @@ Bucketlist is an API created using Flask Framework
                      "username": "admin"
                     }
       ```
-## LOGIN
+### LOGIN
 - Using `POST` method on the postman
 - Navigate to `http://localhost:5000/auth/login`.
 - Enter username and password 
@@ -67,17 +67,21 @@ Bucketlist is an API created using Flask Framework
                    "username":"admdin",
                     "password":"12345"
                 }`
-  - response  : `{
+  - response  : 
+  ```python
+        {
               "token": "eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ1MDcyNzAxNywiaWF0IjoxNDUwNzI2NDE3fQ.eyJ1aWQiOjJ9.cCwq8u_wXZ8wuw9CN3EwhAn7db9w2t_j0o20sVE7rlE"
-               }`
+               }
+  ```
 - A token will be returned.
 - Copy the value of the token
 - click on the header and add a key called `token` and paste the copied token in to the value field
 - This token will be used to access all the necesary endpoints til it expires
 - A token will last for not more than 10 minutes
+- Note: Authentication relies on the token all other pages can only be accessed once a valid token is presented
 
 
-## ADDING BUCKETLIST
+### ADDING BUCKETLIST
 - Navigate to `http://localhost:5000/bucketlists`.
 - Set request method to `POST`
 - make sure the token is set in the Header if you have logged in 
@@ -95,7 +99,7 @@ Bucketlist is an API created using Flask Framework
                     }
     ```
 
-## EDITING BUCKETLIST
+### EDITING BUCKETLIST
 - Navigate to `http://localhost:5000/bucketlists/<id>,`.
 - Set request method to `PUT`
 - make sure the token is set in the Header if you have logged in
@@ -103,19 +107,19 @@ Bucketlist is an API created using Flask Framework
     - request : `{"name":"digger"}`
     - response : `{ "Bucketlist": [ [ "digger" ] ] }`
 
-## DELETING BUCKETLIST
+### DELETING BUCKETLIST
 - Navigate to `http://localhost:5000/bucketlists/<id>,`.
 - Set request method to `DELETE`
 - replace `<id>` with id you want to delete
 - click send
 
-## ADDING ITEM 
+### ADDING ITEM 
 -  Navigate to `http://localhost:5000/bucketlists/<id>/items`.
 -  Replace `<id>` with id of bucketlist you want to add item to 
 - Set request method to `POST`
   - request : `{"name":"buy equipment"}`
   - response :
-  ```bash
+  ```python
     {
     "Bucketlist": [
       {
@@ -140,16 +144,16 @@ Bucketlist is an API created using Flask Framework
 - To view all  items in a bucket list set method to `GET`
 - navigate to `http://localhost:5000/bucketlists/<id>/items`.
 
-## EDITING OR DELETING AN ITEM 
+### EDITING OR DELETING AN ITEM 
 
-- to edit :
+- to Edit :
     - Navigate to `http://localhost:5000/bucketlists/<id>/item/<item_id>`.
     - Set request method to `put `
     - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
       -   send a request containing either `name` or `done` fields
       -   request : `{"done":"True"}`
       -   response :
-      ```bash 
+      ```python 
             {
               "items": [
                 {
@@ -164,3 +168,8 @@ Bucketlist is an API created using Flask Framework
     - Set request method to `DELETE `
     - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
     - Send request
+### TESTS
+- To run test any of the following methods
+    - coverage run --omit="*env*","migrations*","static","templates","test*" -m unittest discover tests
+    - python -m unittest discover tests
+    - python tests/test_bucketlist.py
