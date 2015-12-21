@@ -150,9 +150,9 @@ Bucketlist is an API created using Flask Framework
     - Navigate to `http://localhost:5000/bucketlists/<id>/item/<item_id>`.
     - Set request method to `put `
     - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
-      -   send a request containing either `name` or `done` fields
-      -   request : `{"done":"True"}`
-      -   response :
+      *   send a request containing either `name` or `done` fields
+      *   request : `{"done":"True"}`
+      *   response :
       ```python 
             {
               "items": [
@@ -168,8 +168,9 @@ Bucketlist is an API created using Flask Framework
     - Set request method to `DELETE `
     - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
     - Send request
+    
 ### TESTS
 - To run test any of the following methods
-    - coverage run --omit="*env*","migrations*","static","templates","test*" -m unittest discover tests
-    - python -m unittest discover tests
-    - python tests/test_bucketlist.py
+    * coverage run --omit="*env*","migrations*","static","templates","test*" -m unittest discover tests
+    * python -m unittest discover tests
+    * python tests/test_bucketlist.py
