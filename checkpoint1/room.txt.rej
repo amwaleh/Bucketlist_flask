@@ -1,0 +1,14 @@
+diff a/checkpoint1/room.txt b/checkpoint1/room.txt	(rejected hunks)
+@@ -7,9 +7,4 @@ Tres
+ Lion
+ Fresher
+ Band
+-Mongo
+-Java
+-Bower
+-Crane
+-Greece
+-Tolinda
+\ No newline at end of file
++Mongo
+\ No newline at end of file
