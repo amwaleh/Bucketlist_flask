@@ -97,6 +97,11 @@ class BucketlistTestCase(unittest.TestCase):
         assert res.status_code == 200
         assert 'Bucketlist' in res.data
 
+    def test_2_3_generate_token(self):
+        res = self.app.get("/api/token", headers = self.__class__.header)
+        assert 'token' in res.data
+
+
     def test_3_0_bucketlist_addition(self):
         ''' Test addition of bucketlist '''
         data = json.dumps({'name': "Test_list"})
@@ -175,7 +180,7 @@ class BucketlistTestCase(unittest.TestCase):
             assert items is None
 
     def test_4_0_pages(self):
-        for num in range(1, 10):
+        for num in range(1, 20):
             listname = fake.name()
             data = json.dumps({'name': listname})
             req = self.app.post(
@@ -198,6 +203,14 @@ class BucketlistTestCase(unittest.TestCase):
         data = data['Bucketlist'][0]
         assert 'current_page' in data
         assert data['current_page'] == page
+        page = 100
+        req = self.app.get(
+                            "/bucketlists?page={}".format(page),
+                            headers = self.__class__.header
+                          )
+        assert req.status_code == 401
+
+  
 
     def test_5_0_bucketlist_delete(self):
         '''Deletes a bucketlist by index'''

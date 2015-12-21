@@ -8,14 +8,12 @@ from config import POSTS_PER_PAGE, MAX_PAGES, DATABASE_URI, SECRET
 from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SECRET_KEY'] = "development-Key"
 app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
 auth = HTTPBasicAuth()
-
 
 @auth.verify_password
 def verify_password(username_or_token, password):
@@ -30,14 +28,12 @@ def verify_password(username_or_token, password):
         else:
             return False
 
-
 @app.route("/api/token")
 @auth.login_required
 def get_auth_token():
     ''' Generates Token '''
     token = g.user.generate_auth_token()
     return jsonify({'token': token.decode('ascii')})
-
 
 @app.route("/bucketlists", methods = ["GET", "POST"])
 @auth.login_required
@@ -71,7 +67,6 @@ def bucketlist():
             # Set maximum number of pages
             if int(limit) > 100:
                 post_per_page = 100
-
         ''' Set search query '''
         query = db.session.query(Bucketlist).filter_by(creator=uid)
         if q_name:
@@ -105,7 +100,6 @@ def bucketlist():
         }
         return jsonify(Bucketlist = [pages_view]), 200
 
-
 @app.route("/bucketlists/<int:id>", methods = ["GET", "PUT", "DELETE"])
 @auth.login_required
 def Update_bucketlist(id):
@@ -122,7 +116,7 @@ def Update_bucketlist(id):
             filter(
             		Bucketlist.creator == uid,
                     Bucketlist.id == id
-                  )
+            )
         return jsonify(Bucketlist = [list for list in lists]), 201
 
     if request.method == "DELETE":
@@ -147,7 +141,7 @@ def Update_bucketlist(id):
             filter(
             		Bucketlist.creator == uid,
             		Bucketlist.id == id
-        		  )
+            )
         return jsonify(Bucketlist = [list for list in newList]), 200
 
 
