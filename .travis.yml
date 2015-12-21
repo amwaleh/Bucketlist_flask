@@ -8,6 +8,8 @@ python:
 
 before_install:
   - "pip install -r requirements.txt"
+before_script:
+  - psql -c 'create database bucket_test;' -U postgres
 script:
   - python -m unittest discover
   #- coverage run --omit="*virtualenv*","limber*" manage.py test
