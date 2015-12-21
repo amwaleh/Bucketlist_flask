@@ -1,7 +1,8 @@
 from flask import Flask, g
 import flask.ext.testing
 from flask.ext.sqlalchemy import SQLAlchemy
-from faker import Factory
+from faker import Faker
+
 import sys
 import unittest
 import json
@@ -11,8 +12,8 @@ from api.bucketlist import app
 from api.models import db, Users, Bucketlist, Bucketitems
 
 
-
-fake = Factory.create()
+fake = Faker()
+#fake = Factory.create()
 class BucketlistTestCase(unittest.TestCase):
     username = fake.name()
     password = fake.password()
