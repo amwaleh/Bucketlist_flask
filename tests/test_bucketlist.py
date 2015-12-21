@@ -1,7 +1,7 @@
 from flask import Flask, g
 import flask.ext.testing
 from flask.ext.sqlalchemy import SQLAlchemy
-from faker import Factory
+#from faker import Factory
 import sys
 import unittest
 import json
