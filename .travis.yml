@@ -30,6 +30,6 @@ branches:
 env:
   global:
     - TRAVIS_BUILD=true
-    - TEST_DB='postgresql://postgres:""@127.0.0.1/bucket_test'
+    
 after_success:
     - coveralls
