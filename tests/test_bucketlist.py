@@ -1,14 +1,15 @@
 from flask import Flask, g
 import flask.ext.testing
 from flask.ext.sqlalchemy import SQLAlchemy
-import sys
-sys.path.append('.')
 from faker import Factory
+import sys
+import unittest
+import json
+sys.path.append('.')
 from api.config import TEST_DB
 from api.bucketlist import app
 from api.models import db, Users, Bucketlist, Bucketitems
-import unittest
-import json
+
 
 
 fake = Factory.create()
