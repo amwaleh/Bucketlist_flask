@@ -3,6 +3,7 @@ aniso8601==1.1.0
 Babel==2.1.1
 click==6.2
 colorama==0.3.3
+coverage==4.0.3
 dj-database-url==0.3.0
 dj-static==0.0.6
 Django==1.8.6

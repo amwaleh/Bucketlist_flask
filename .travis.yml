@@ -25,5 +25,7 @@ env:
   global:
     - TRAVIS_BUILD=true
 
-script: coverage run -m unittest discover tests
-after_success: coveralls
+script: 
+  coverage run -m unittest discover tests
+after_success: 
+  coveralls
