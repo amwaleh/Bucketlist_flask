@@ -21,22 +21,27 @@ Bucketlist is an API created using Flask Framework
  - `python manage.py db upgrade`
  - `python api/bucketlist.py` to start the server
  
-# FEATURES
-## EndPoint 
+
+# ENDPOINTS
+
 | End Point                                | Functionality                     |
 |------------------------------------------|-----------------------------------|
 | POST /auth/login                         | Logs a user in                    |
-| GET /auth/logout                         | Logs a user out                   |
-| POST /bucketlists/                       | Create a new bucket list          |
-| GET /bucketlists/                        | List all the created bucket lists |
-| GET /bucketlists/<id>                    | Get single bucket list            |
-| PUT /bucketlists/<id>                    | Update this bucket list           |
-| DELETE /bucketlists/<id>                 | Delete this single bucket list    |
-| POST /bucketlists/<id>/items/            | Create a new item in bucket list  |
-| PUT /bucketlists/<id>/items/<item_id>    | Update a bucket list item         |
-| DELETE /bucketlists/<id>/items/<item_id> | Delete an item in a bucket list   |
-- Token based authentication
-- Users can create multiple bucket lists and bucketlist items
-- Users can delete bucket lists and items in them
+| POST /api/users                          | Create a user                   |
+| *GET /auth/logout                         | Logs a user out                   |
+| *POST /bucketlists/                       | Create a new bucket list          |
+| *GET /bucketlists/                        | List all the created bucket lists |
+| *GET /bucketlists/<id>                    | Get single bucket list            |
+| *PUT /bucketlists/<id>                    | Update this bucket list           |
+| *DELETE /bucketlists/<id>                 | Delete this single bucket list    |
+| *POST /bucketlists/<id>/items/            | Create a new item in bucket list  |
+| *PUT /bucketlists/<id>/items/<item_id>    | Update a bucket list item         |
+| *DELETE /bucketlists/<id>/items/<item_id> | Delete an item in a bucket list   |
+- NB. * Need login or Authorization Token 
 
-# CREATE USERS 
+## SETTING UP 
+
+## Creating Users
+- Open postman 
+- navigate to `http://localhost/api/users`
+- 
