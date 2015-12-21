@@ -15,6 +15,10 @@ before_install:
   - "pip install -r requirements.txt"
 before_script:
   - psql -c 'create database Bucket_test;' -U postgres
+  - python manage.py db init
+  - python manage.py db migrate
+  - python manage.py db upgrade
+
 script:
   - python -m unittest discover
   #- coverage run --omit="*virtualenv*","limber*" manage.py test
