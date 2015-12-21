@@ -80,14 +80,17 @@ Bucketlist is an API created using Flask Framework
 - make sure the token is set in the Header if you have logged in 
 - Enter name of the bucketlist in the textarea and click send
     - request : ``` { "name": "Bucketlist1" }```
-    - response : ```bash {
-  "Bucketlist": [
-    [
-      "bucketlist 1",
-      2
-    ]
-  ]
-}```
+    - response :
+    ```bash
+                    {
+                      "Bucketlist": [
+                        [
+                          "bucketlist 1",
+                          2
+                        ]
+                      ]
+                    }
+    ```
 
 ## EDITING BUCKETLIST
 - Navigate to `http://localhost:5000/bucketlists/<id>,`.
@@ -103,6 +106,33 @@ Bucketlist is an API created using Flask Framework
 - replace `<id>` with id you want to delete
 - click send
 
-
+## ADDING ITEM 
+-  Navigate to `http://localhost:5000/bucketlists/<id>/items`.
+-  Replace `<id>` with id of bucketlist you want to add item to 
+- Set request method to `POST`
+  - request : `{"name":"buy equipment"}`
+  - response :
+  ```bash
+    {
+    "Bucketlist": [
+      {
+        "name": "digger",
+        "items": [
+          {
+            "date_created": "Mon, 21 Dec 2015 23:15:09 GMT",
+            "date_modified": "Mon, 21 Dec 2015 23:15:09 GMT",
+            "done": false,
+            "id": 3,
+            "name": "buy equipment"
+          }
+        ],
+        "created_by": 2,
+        "created_on": "Mon, 21 Dec 2015 22:51:26 GMT",
+        "modified_on": "Mon, 21 Dec 2015 23:04:14 GMT",
+        "id": 2
+      }
+    ]
+  }
+```
 
 
