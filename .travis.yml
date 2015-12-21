@@ -9,7 +9,7 @@ python:
 before_install:
   - "pip install -r requirements.txt"
 script:
-  - ./manage.py test
+  - ./tests/test_bucketlist.py
   #- coverage run --omit="*virtualenv*","limber*" manage.py test
 branches:
   only:
