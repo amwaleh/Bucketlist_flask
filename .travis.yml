@@ -15,13 +15,7 @@ before_install:
   - "pip install -r requirements.txt"
 before_script:
   - psql -c 'create database bucket_test;' -U postgres
-  
 
-
-
-script:
-  - python -m unittest discover
-  #- coverage run --omit="*virtualenv*","limber*" manage.py test
 branches:
   only:
   - develop
@@ -30,6 +24,6 @@ branches:
 env:
   global:
     - TRAVIS_BUILD=true
-    
-after_success:
-    - coveralls
+
+script: coverage run -m unittest discover tests
+after_success: coveralls
