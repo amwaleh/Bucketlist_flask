@@ -134,5 +134,30 @@ Bucketlist is an API created using Flask Framework
     ]
   }
 ```
+- To view all  items in a bucket list set method to `GET`
+- navigate to `http://localhost:5000/bucketlists/<id>/items`.
 
+## EDITING OR DELETING AN ITEM 
 
+- to edit :
+    - Navigate to `http://localhost:5000/bucketlists/<id>/item/<item_id>`.
+    - Set request method to `put `
+    - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
+      -   send a request containing either `name` or `done` fields
+      -   request : `{"done":"True"}`
+      -   response :
+      ```bash 
+            {
+              "items": [
+                {
+                  "done": true,
+                  "name": "buy equipment"
+                }
+              ]
+            }
+      ```
+- To delete 
+    - Navigate to `http://localhost:5000/bucketlists/<id>/item/<item_id>`.
+    - Set request method to `DELETE `
+    - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
+    - Send request
