@@ -53,9 +53,12 @@ Bucketlist is an API created using Flask Framework
 - Enter username and password in json format in the textarea :
       - request :  `{ "username":"admin", "password":"12345"}`
 
-      - response :` {
+      - response :
+      ```python
+                    {
                      "username": "admin"
-                    }`
+                    }
+      ```
 ## LOGIN
 - Using `POST` method on the postman
 - Navigate to `http://localhost:5000/auth/login`.
@@ -81,7 +84,7 @@ Bucketlist is an API created using Flask Framework
 - Enter name of the bucketlist in the textarea and click send
     - request : ``` { "name": "Bucketlist1" }```
     - response :
-    ```bash
+    ```
                     {
                       "Bucketlist": [
                         [
