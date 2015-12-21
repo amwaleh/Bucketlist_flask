@@ -1,21 +1,30 @@
 language: python
 python:
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "3.5"
+  - "2.7.10"
+  # - "3.2"
+  # - "3.3"
+  # - "3.4"
+  # - "3.5"
+addons:
+  postgresql: "9.3"
+
+services:
+  - postgresql
 
 before_install:
   - "pip install -r requirements.txt"
-script:
-  - ./tests/test_bucketlist.py
-  #- coverage run --omit="*virtualenv*","limber*" manage.py test
+before_script:
+  - psql -c 'create database bucket_test;' -U postgres
+
 branches:
   only:
   - develop
+  - master
+  - feature/test
 env:
   global:
     - TRAVIS_BUILD=true
-after_success:
-    - coveralls
+script: 
+  coverage run --omit="*env*","migrations*","static","templates","test*" -m unittest discover tests
+after_success: 
+  coveralls

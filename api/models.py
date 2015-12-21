@@ -75,9 +75,7 @@ class Bucketitems(db.Model):
 		self.created_on = created_on
 		self.modified_on = modified_on
 
-	def __repr___(self):
-		 return '<name %r>' % (self.name)
-
+	
 	@property
 	def serialize(self):
 		''' serialize output of bucketlist '''
