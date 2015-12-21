@@ -14,7 +14,7 @@ services:
 before_install:
   - "pip install -r requirements.txt"
 before_script:
-  - psql -c 'create database Bucket_test;' -U postgres
+  - cp config/database.yml.travis config/database.yml
 script:
   - python -m unittest discover
   #- coverage run --omit="*virtualenv*","limber*" manage.py test
