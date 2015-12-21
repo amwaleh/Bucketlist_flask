@@ -40,8 +40,32 @@ Bucketlist is an API created using Flask Framework
 - NB. * Need login or Authorization Token 
 
 ## SETTING UP 
+- Once the server is runnng, navigate to `http://localhost:5000` using Postman 
+- Click the header tab and set the Header to `content_type: application/jason`
+- Click the body tab and select on the `raw` option 
+- We shall be using this section for most of our requests
+- Json format will be used in sending and recieving request
 
 ## Creating Users
-- Open postman 
-- navigate to `http://localhost/api/users`
-- 
+
+- Using the `POST` Method on postman 
+- Navigate to `http://localhost:5000/api/users`.
+- Enter username and password in json format in the textarea :
+      - request :  `{ "username":"admin", "password":"12345"}`
+
+      - response :` {
+                     "username": "admin"
+                    }`
+## LOGIN
+- Using `POST` method on the postman
+- Navigate to `http://localhost:5000/auth/login`.
+- Enter username and password 
+  -   request : `{
+                   "username":"admdin",
+                    "password":"12345"
+                }`
+- response  : `{
+-               "token": "eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ1MDcyNzAxNywiaWF0IjoxNDUwNzI2NDE3fQ.eyJ1aWQiOjJ9.cCwq8u_wXZ8wuw9CN3EwhAn7db9w2t_j0o20sVE7rlE"
+-               }`
+
+              
