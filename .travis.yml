@@ -15,7 +15,8 @@ before_install:
   - "pip install -r requirements.txt"
 before_script:
   - psql -c 'create database Bucket_test;' -U postgres
-  
+  -psql -l
+
 
 
 script:
@@ -29,6 +30,6 @@ branches:
 env:
   global:
     - TRAVIS_BUILD=true
-    - TEST_DB ='postgresql://postgres:""@127.0.0.1/Bucket_test'
+    - TEST_DB='postgresql://postgres:""@127.0.0.1/Bucket_test'
 after_success:
     - coveralls
