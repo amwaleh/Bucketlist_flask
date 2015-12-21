@@ -2,7 +2,6 @@ from flask import json, jsonify, session, Flask, session, \
     			  escape, render_template, request,\
    				  session, redirect, url_for, g
 from models import db, Users, Bucketlist, Bucketitems
-from form import SignupForm, LoginForm, AddBucketlist
 from flask.ext.httpauth import HTTPBasicAuth
 from sqlalchemy_paginator import Paginator
 from config import POSTS_PER_PAGE, MAX_PAGES, DATABASE_URI, SECRET
