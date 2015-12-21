@@ -64,8 +64,45 @@ Bucketlist is an API created using Flask Framework
                    "username":"admdin",
                     "password":"12345"
                 }`
-- response  : `{
+  - response  : `{
               "token": "eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ1MDcyNzAxNywiaWF0IjoxNDUwNzI2NDE3fQ.eyJ1aWQiOjJ9.cCwq8u_wXZ8wuw9CN3EwhAn7db9w2t_j0o20sVE7rlE"
                }`
+- A token will be returned.
+- Copy the value of the token
+- click on the header and add a key called `token` and paste the copied token in to the value field
+- This token will be used to access all the necesary endpoints til it expires
+- A token will last for not more than 10 minutes
 
-              
+
+## ADDING BUCKETLIST
+- Navigate to `http://localhost:5000/bucketlists`.
+- Set request method to `POST`
+- make sure the token is set in the Header if you have logged in 
+- Enter name of the bucketlist in the textarea and click send
+    - request : ``` { "name": "Bucketlist1" }```
+    - response : ```bash {
+  "Bucketlist": [
+    [
+      "bucketlist 1",
+      2
+    ]
+  ]
+}```
+
+## EDITING BUCKETLIST
+- Navigate to `http://localhost:5000/bucketlists/<id>,`.
+- Set request method to `PUT`
+- make sure the token is set in the Header if you have logged in
+- You can update the `name`  field which the id provided belongs 
+    - request : `{"name":"digger"}`
+    - response : `{ "Bucketlist": [ [ "digger" ] ] }`
+
+## DELETING BUCKETLIST
+- Navigate to `http://localhost:5000/bucketlists/<id>,`.
+- Set request method to `DELETE`
+- replace `<id>` with id you want to delete
+- click send
+
+
+
+
