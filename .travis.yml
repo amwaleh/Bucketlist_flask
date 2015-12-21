@@ -5,6 +5,11 @@ python:
   # - "3.3"
   # - "3.4"
   # - "3.5"
+addons:
+  postgresql: "9.3"
+
+services:
+  - postgresql
 
 before_install:
   - "pip install -r requirements.txt"
