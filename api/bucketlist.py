@@ -67,7 +67,7 @@ def bucketlist():
                 post_per_page = int(limit)
             # Set maximum number of pages
             if int(limit) > 100:
-                post_per_page = 100
+                return jsonify ({'ERROR':'Post Per Page cannot be more than 100  '}), 400
         ''' Set search query '''
         query = db.session.query(Bucketlist).filter_by(creator=uid)
         if q_name:
@@ -121,7 +121,10 @@ def Update_bucketlist(id):
         return jsonify(Bucketlist = [list for list in lists]), 201
 
     if request.method == "DELETE":
-        del_list = Bucketlist.query.get(id)
+        del_list = Bucketlist.query.filter(
+                                            Bucketlist.id ==id,
+                                            Bucketlist.creator == uid
+                                           ).first()
         # If ID does not exist Exit
         if del_list is None:
             return "List does not exist", 404
@@ -134,7 +137,10 @@ def Update_bucketlist(id):
         uid = g.user.uid
         # Check if list exists
         username = request.args.get('username')
-        newList = Bucketlist.query.get(id)
+        newList = Bucketlist.query.filter(
+                                            Bucketlist.id ==id,
+                                            Bucketlist.creator == uid
+                                           ).first()
         if newList is None:
             return jsonify({'Error': 'List does not Exist'})
 
@@ -171,45 +177,6 @@ def bucketitems(id):
                     Bucketlist.id == id
                   )
         return jsonify(Bucketlist = [item.serialize for item in items]), 200
-
-    if request.method == 'PUT':
-        newitem = Bucketitems.query.get(item_id)
-        data = request.get_json(force=True)
-        if  'name' in request.json:
-            newitem.name = request.json.get('name')
-        if 'done' in request.json:
-            newitem.done = request.json.get('done')
-        db.session.commit()
-        return jsonify(items = [i.serializeitem for i in
-                              db.session.query(Bucketitems).
-                              filter(
-                                  Bucketlist.creator == uid,
-                                  Bucketlist.id == id,
-                                  Bucketitems.id == item_id
-                              )]), 201
-
-    if request.method == 'DELETE':
-        del_item = Bucketitems.query.get(item_id)
-        # if Item does not exist escape
-        if del_item is None:
-            return jsonify({'Error': 'List does not Exist'}), 404
-        # Else Delete Item and commit
-        db.session.delete(del_item)
-        db.session.commit()
-        return "item Deleted", 200
-
-    if request.method == 'GET':
-        items = [ i.serializeitem for i in
-                  db.session.query(Bucketitems).
-                  filter(
-                         Bucketlist.creator == uid,
-                         Bucketlist.id == id,
-                         Bucketitems.id == item_id
-                        )
-                ]
-        if len(items) == 0:
-            return jsonify({'Error': 'No Item Found'}), 404
-        return jsonify(items = items), 200
 
 
 @app.route("/bucketlists/<int:id>/items/<int:item_id>", methods = ["GET", "PUT", "DELETE"])

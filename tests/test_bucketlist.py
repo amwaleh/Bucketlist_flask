@@ -138,6 +138,9 @@ class BucketlistTestCase(unittest.TestCase):
         with app.test_request_context():
             bucket = Bucketlist.query.first()
             index = bucket.id
+            res = self.app.get("/bucketlists/{}/items".format(index),
+                                data = data, headers = self.__class__.header)
+            assert res.status_code == 200
             res = self.app.post("/bucketlists/{}/items".format(index),
                                 data = data, headers = self.__class__.header)
             assert res.status_code == 201
@@ -211,6 +214,12 @@ class BucketlistTestCase(unittest.TestCase):
                           )
         assert req.status_code == 401
 
+    def test_4_1_limit(self):
+        req = self.app.get(
+                            "/bucketlists?limit=200",
+                            headers = self.__class__.header
+                          )
+        assert req.status_code == 400
   
 
     def test_5_0_bucketlist_delete(self):
@@ -218,6 +227,7 @@ class BucketlistTestCase(unittest.TestCase):
         with app.test_request_context():
             bucket = Bucketlist.query.first()
             index = bucket.id
+           
             req = self.app.delete(
                 "/bucketlists/{}".format(index),
                 headers = self.__class__.header
@@ -225,6 +235,7 @@ class BucketlistTestCase(unittest.TestCase):
             bucket = Bucketlist.query.get(index)
             assert bucket == None
             assert req.status_code == 401
+
 
     def test_6_logout(self):
         req = self.app.get("/auth/logout", headers = self.__class__.header)
