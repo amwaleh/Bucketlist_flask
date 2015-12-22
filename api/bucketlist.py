@@ -2,21 +2,19 @@ from flask import json, jsonify, session, Flask, session, \
     			  escape, render_template, request,\
    				  session, redirect, url_for, g
 from models import db, Users, Bucketlist, Bucketitems
-from form import SignupForm, LoginForm, AddBucketlist
 from flask.ext.httpauth import HTTPBasicAuth
 from sqlalchemy_paginator import Paginator
 from config import POSTS_PER_PAGE, MAX_PAGES, DATABASE_URI, SECRET
 from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
-
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
-app.config['SECRET_KEY'] = "development-Key"
+app.config['SECRET_KEY'] = os.environ.get('SECRET')
 app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
 auth = HTTPBasicAuth()
-
 
 @auth.verify_password
 def verify_password(username_or_token, password):
@@ -31,14 +29,12 @@ def verify_password(username_or_token, password):
         else:
             return False
 
-
 @app.route("/api/token")
 @auth.login_required
 def get_auth_token():
     ''' Generates Token '''
     token = g.user.generate_auth_token()
     return jsonify({'token': token.decode('ascii')})
-
 
 @app.route("/bucketlists", methods = ["GET", "POST"])
 @auth.login_required
@@ -72,7 +68,6 @@ def bucketlist():
             # Set maximum number of pages
             if int(limit) > 100:
                 post_per_page = 100
-
         ''' Set search query '''
         query = db.session.query(Bucketlist).filter_by(creator=uid)
         if q_name:
@@ -106,7 +101,6 @@ def bucketlist():
         }
         return jsonify(Bucketlist = [pages_view]), 200
 
-
 @app.route("/bucketlists/<int:id>", methods = ["GET", "PUT", "DELETE"])
 @auth.login_required
 def Update_bucketlist(id):
@@ -123,7 +117,7 @@ def Update_bucketlist(id):
             filter(
             		Bucketlist.creator == uid,
                     Bucketlist.id == id
-                  )
+            )
         return jsonify(Bucketlist = [list for list in lists]), 201
 
     if request.method == "DELETE":
@@ -148,7 +142,7 @@ def Update_bucketlist(id):
             filter(
             		Bucketlist.creator == uid,
             		Bucketlist.id == id
-        		  )
+            )
         return jsonify(Bucketlist = [list for list in newList]), 200
 
 
@@ -177,6 +171,45 @@ def bucketitems(id):
                     Bucketlist.id == id
                   )
         return jsonify(Bucketlist = [item.serialize for item in items]), 200
+
+    if request.method == 'PUT':
+        newitem = Bucketitems.query.get(item_id)
+        data = request.get_json(force=True)
+        if  'name' in request.json:
+            newitem.name = request.json.get('name')
+        if 'done' in request.json:
+            newitem.done = request.json.get('done')
+        db.session.commit()
+        return jsonify(items = [i.serializeitem for i in
+                              db.session.query(Bucketitems).
+                              filter(
+                                  Bucketlist.creator == uid,
+                                  Bucketlist.id == id,
+                                  Bucketitems.id == item_id
+                              )]), 201
+
+    if request.method == 'DELETE':
+        del_item = Bucketitems.query.get(item_id)
+        # if Item does not exist escape
+        if del_item is None:
+            return jsonify({'Error': 'List does not Exist'}), 404
+        # Else Delete Item and commit
+        db.session.delete(del_item)
+        db.session.commit()
+        return "item Deleted", 200
+
+    if request.method == 'GET':
+        items = [ i.serializeitem for i in
+                  db.session.query(Bucketitems).
+                  filter(
+                         Bucketlist.creator == uid,
+                         Bucketlist.id == id,
+                         Bucketitems.id == item_id
+                        )
+                ]
+        if len(items) == 0:
+            return jsonify({'Error': 'No Item Found'}), 404
+        return jsonify(items = items), 200
 
 
 @app.route("/bucketlists/<int:id>/items/<int:item_id>", methods = ["GET", "PUT", "DELETE"])

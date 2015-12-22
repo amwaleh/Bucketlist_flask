@@ -1,17 +1,19 @@
 from flask import Flask, g
 import flask.ext.testing
 from flask.ext.sqlalchemy import SQLAlchemy
+from faker import Faker
+import os
 import sys
+import unittest
+import json
 sys.path.append('.')
-from faker import Factory
 from api.config import TEST_DB
 from api.bucketlist import app
 from api.models import db, Users, Bucketlist, Bucketitems
-import unittest
-import json
 
 
-fake = Factory.create()
+fake = Faker()
+#fake = Factory.create()
 class BucketlistTestCase(unittest.TestCase):
     username = fake.name()
     password = fake.password()
@@ -21,13 +23,14 @@ class BucketlistTestCase(unittest.TestCase):
 
     # set up the app config database and
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         with app.test_request_context():
+            cls.app = app.test_client()
             app.config['SECRET_KEY'] = "development-test-Key"
             app.config['TESTING'] = True
             # change config to use test database
             app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DB
-            self.app = app.test_client()
+            
             token = ''
             header = ''
             db.init_app(app)
@@ -36,7 +39,7 @@ class BucketlistTestCase(unittest.TestCase):
 
      # Clean up
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         with app.test_request_context():
             db.session.close()
             db.drop_all()
@@ -94,6 +97,11 @@ class BucketlistTestCase(unittest.TestCase):
         res = self.app.get('/bucketlists', headers = self.__class__.header)
         assert res.status_code == 200
         assert 'Bucketlist' in res.data
+
+    def test_2_3_generate_token(self):
+        res = self.app.get("/api/token", headers = self.__class__.header)
+        assert 'token' in res.data
+
 
     def test_3_0_bucketlist_addition(self):
         ''' Test addition of bucketlist '''
@@ -173,7 +181,7 @@ class BucketlistTestCase(unittest.TestCase):
             assert items is None
 
     def test_4_0_pages(self):
-        for num in range(1, 10):
+        for num in range(1, 20):
             listname = fake.name()
             data = json.dumps({'name': listname})
             req = self.app.post(
@@ -196,6 +204,14 @@ class BucketlistTestCase(unittest.TestCase):
         data = data['Bucketlist'][0]
         assert 'current_page' in data
         assert data['current_page'] == page
+        page = 100
+        req = self.app.get(
+                            "/bucketlists?page={}".format(page),
+                            headers = self.__class__.header
+                          )
+        assert req.status_code == 401
+
+  
 
     def test_5_0_bucketlist_delete(self):
         '''Deletes a bucketlist by index'''
