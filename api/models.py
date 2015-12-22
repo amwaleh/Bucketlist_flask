@@ -109,7 +109,9 @@ class Bucketlist(db.Model):
 	modified_on = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 	
 		
-	def __init__(self,name,creator=None,id=None,created_on=None,modified_on=None,item={}):
+	def __init__(self,name,creator=None,id=None,created_on=None,modified_on=None,item=None):
+		if item is None:
+			item = {}
 		self.id = id 
 		self.item = item
 		self.name = name
