@@ -141,4 +141,5 @@ class Bucketlist(db.Model):
         return [item.serialize for item in self.item]
 
     def __repr__(self):
-        return "{0}".format(self.name)
+    return "{0}".format(self.name)
+
