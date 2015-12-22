@@ -229,7 +229,7 @@ def update_items(id, item_id):
 	                 	 Bucketitems.id == item_id
 	             		)
 	            ]
-	    if items :
+	    if not items :
 	        return jsonify({'error': 'No Item Found'}), 404
 	    return jsonify(items = items), 200
 

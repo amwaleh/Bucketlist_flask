@@ -160,11 +160,13 @@ class BucketlistTestCase(unittest.TestCase):
                 "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
                 data = data, headers = self.__class__.header
             )
+
             assert res.status_code == 201
             res = self.app.get(
                 "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
                 data = data, headers = self.__class__.header
             )
+         
             json_data = json.loads(res.data)['items'][0]
             assert item == json_data['name']
 
