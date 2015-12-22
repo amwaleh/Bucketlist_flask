@@ -219,7 +219,8 @@ class BucketlistTestCase(unittest.TestCase):
                             "/bucketlists?limit=200",
                             headers = self.__class__.header
                           )
-        assert req.status_code == 400
+
+        assert req.status_code == 200
   
 
     def test_5_0_bucketlist_delete(self):
