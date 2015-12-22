@@ -209,7 +209,7 @@ class BucketlistTestCase(unittest.TestCase):
                 headers = self.__class__.header
             )
             bucket = Bucketlist.query.get(index)
-            assert bucket == None
+            assert bucket is None
             assert req.status_code == 401
 
     def test_6_logout(self):
