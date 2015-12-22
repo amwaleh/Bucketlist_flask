@@ -2,7 +2,7 @@ from flask import Flask, g
 import flask.ext.testing
 from flask.ext.sqlalchemy import SQLAlchemy
 from faker import Faker
-
+import os
 import sys
 import unittest
 import json
@@ -23,13 +23,14 @@ class BucketlistTestCase(unittest.TestCase):
 
     # set up the app config database and
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         with app.test_request_context():
+            cls.app = app.test_client()
             app.config['SECRET_KEY'] = "development-test-Key"
             app.config['TESTING'] = True
             # change config to use test database
             app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DB
-            self.app = app.test_client()
+            
             token = ''
             header = ''
             db.init_app(app)
@@ -38,7 +39,7 @@ class BucketlistTestCase(unittest.TestCase):
 
      # Clean up
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         with app.test_request_context():
             db.session.close()
             db.drop_all()

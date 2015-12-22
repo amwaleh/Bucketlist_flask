@@ -1,5 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/andela-amwaleh/Bucketlist_flask/badge.svg?branch=feature%2Ftest&service=github)](https://coveralls.io/github/andela-amwaleh/Bucketlist_flask?branch=feature%2Ftest)
 [![Build Status](https://travis-ci.org/andela-amwaleh/Bucketlist_flask.svg?branch=feature%2Ftest)](https://travis-ci.org/andela-amwaleh/Bucketlist_flask)
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/84f92b1d8c8443b29f3306b70b001b4e/badge.svg)](https://www.quantifiedcode.com/app/project/84f92b1d8c8443b29f3306b70b001b4e)
 
 #INTRODUCTION:
 Bucketlist is an API created using Flask Framework 

@@ -7,10 +7,11 @@ from sqlalchemy_paginator import Paginator
 from config import POSTS_PER_PAGE, MAX_PAGES, DATABASE_URI, SECRET
 from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
-app.config['SECRET_KEY'] = "development-Key"
+app.config['SECRET_KEY'] = os.environ.get('SECRET')
 app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
 auth = HTTPBasicAuth()
