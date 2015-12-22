@@ -2,13 +2,13 @@
 [![Build Status](https://travis-ci.org/andela-amwaleh/Bucketlist_flask.svg?branch=feature%2Ftest)](https://travis-ci.org/andela-amwaleh/Bucketlist_flask)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/84f92b1d8c8443b29f3306b70b001b4e/badge.svg)](https://www.quantifiedcode.com/app/project/84f92b1d8c8443b29f3306b70b001b4e)
 
-#INTRODUCTION:
+# Introduction
 Bucketlist is an API created using Flask Framework 
 ### Requirements
-- postgres
+- Postgres
 - Postman
 
-### INSTALLATION
+### Installation
 - Download the repo
 - Download and install [postgres](http://www.postgresql.org/)
 - Create two databases in Postgres `flask` and `bucket_test`
@@ -23,33 +23,33 @@ Bucketlist is an API created using Flask Framework
  * `python api/bucketlist.py` to start the server
  
 
-### ENDPOINTS
+### Endpoints
 
 | End Point                                | Functionality                     |
 |------------------------------------------|-----------------------------------|
 | POST /auth/login                         | Logs a user in                    |
 | POST /api/users                          | Create a user                   |
-| *GET /auth/logout                         | Logs a user out                   |
-| *POST /bucketlists/                       | Create a new bucket list          |
-| *GET /bucketlists/                        | List all the created bucket lists |
-| *GET /bucketlists/<id>                    | Get single bucket list            |
-| *PUT /bucketlists/<id>                    | Update this bucket list           |
-| *DELETE /bucketlists/<id>                 | Delete this single bucket list    |
-| *POST /bucketlists/<id>/items/            | Create a new item in bucket list  |
-| *PUT /bucketlists/<id>/items/<item_id>    | Update a bucket list item         |
-| *DELETE /bucketlists/<id>/items/<item_id> | Delete an item in a bucket list   |
-- NB. * Need login or Authorization Token 
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') GET /auth/logout                         | Logs a user out                   |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') POST /bucketlists/                       | Create a new bucket list          |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') GET /bucketlists/                        | List all the created bucket lists |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') GET /bucketlists/<id>                    | Get single bucket list            |
+|![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') PUT /bucketlists/<id>                    | Update this bucket list           |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') DELETE /bucketlists/<id>                 | Delete this single bucket list    |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') POST /bucketlists/<id>/items/            | Create a new item in bucket list  |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') PUT /bucketlists/<id>/items/<item_id>    | Update a bucket list item         |
+| ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') DELETE /bucketlists/<id>/items/<item_id> | Delete an item in a bucket list   |
+- NB. ![secure](https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/lock-circle-green-16.png 'logo') Need login or Authorization Token 
 
-### SETTING UP 
+### Setting up
 - Once the server is runnng, navigate to `http://localhost:5000` using Postman 
-- Click the header tab and set the Header to `content_type: application/jason`
+- Click the header tab and set the Header to `content_type: application/json`
 - Click the body tab and select on the `raw` option 
 - We shall be using this section for most of our requests
 - Json format will be used in sending and recieving request
 
 ### Creating Users
 
-- Using the `POST` Method on postman 
+- Using the `POST` Method on Postman 
 - Navigate to `http://localhost:5000/api/users`.
 - Enter username and password in json format in the textarea :
       - request :  `{ "username":"admin", "password":"12345"}`
@@ -60,8 +60,10 @@ Bucketlist is an API created using Flask Framework
                      "username": "admin"
                     }
       ```
-### LOGIN
-- Using `POST` method on the postman
+
+
+### Login
+- Using `POST` method on the Postman
 - Navigate to `http://localhost:5000/auth/login`.
 - Enter username and password 
   -   request : `{
@@ -82,7 +84,7 @@ Bucketlist is an API created using Flask Framework
 - Note: Authentication relies on the token all other pages can only be accessed once a valid token is presented
 
 
-### ADDING BUCKETLIST
+### Adding Bucketlist
 - Navigate to `http://localhost:5000/bucketlists`.
 - Set request method to `POST`
 - make sure the token is set in the Header if you have logged in 
@@ -100,7 +102,7 @@ Bucketlist is an API created using Flask Framework
                     }
     ```
 
-### EDITING BUCKETLIST
+### Editing Bucketlist
 - Navigate to `http://localhost:5000/bucketlists/<id>,`.
 - Set request method to `PUT`
 - make sure the token is set in the Header if you have logged in
@@ -108,13 +110,13 @@ Bucketlist is an API created using Flask Framework
     - request : `{"name":"digger"}`
     - response : `{ "Bucketlist": [ [ "digger" ] ] }`
 
-### DELETING BUCKETLIST
+### Deleting Bucketlist
 - Navigate to `http://localhost:5000/bucketlists/<id>,`.
 - Set request method to `DELETE`
 - replace `<id>` with id you want to delete
 - click send
 
-### ADDING ITEM 
+### Adding Item
 -  Navigate to `http://localhost:5000/bucketlists/<id>/items`.
 -  Replace `<id>` with id of bucketlist you want to add item to 
 - Set request method to `POST`
@@ -145,9 +147,9 @@ Bucketlist is an API created using Flask Framework
 - To view all  items in a bucket list set method to `GET`
 - navigate to `http://localhost:5000/bucketlists/<id>/items`.
 
-### EDITING OR DELETING AN ITEM 
+### Editing or Deleteing an Item 
 
-- to Edit :
+- To Edit :
     - Navigate to `http://localhost:5000/bucketlists/<id>/item/<item_id>`.
     - Set request method to `put `
     - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
@@ -164,14 +166,14 @@ Bucketlist is an API created using Flask Framework
               ]
             }
       ```
-- To delete 
+- To Delete 
     - Navigate to `http://localhost:5000/bucketlists/<id>/item/<item_id>`.
     - Set request method to `DELETE `
     - replace `<id>` with id of bucketlist and `<item_id>` with the id of item you want to edit
     - Send request
     
-### TESTS
-- To run test any of the following methods
-    * coverage run --omit="*env*","migrations*","static","templates","test*" -m unittest discover tests
-    * python -m unittest discover tests
-    * python tests/test_bucketlist.py
+### Tests
+- To run test use any of the following commands
+    * `coverage run --omit="*env*","migrations*","static","templates","test*" -m unittest discover tests`
+    * `python -m unittest discover tests`
+    * `python tests/test_bucketlist.py`
