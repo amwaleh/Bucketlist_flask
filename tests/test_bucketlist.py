@@ -14,10 +14,13 @@ from api.models import db, Users, Bucketlist, Bucketitems
 
 fake = Faker()
 #fake = Factory.create()
+
+
 class BucketlistTestCase(unittest.TestCase):
     username = fake.name()
     password = fake.password()
     # Create the app
+
     def create_app(self):
         return create_app(self)
 
@@ -30,7 +33,7 @@ class BucketlistTestCase(unittest.TestCase):
             app.config['TESTING'] = True
             # change config to use test database
             app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DB
-            
+
             token = ''
             header = ''
             db.init_app(app)
@@ -62,7 +65,7 @@ class BucketlistTestCase(unittest.TestCase):
         data = json.dumps(
             {"username": self.username, "password": self.password})
         res = self.app.post(
-            '/api/users', data = data, content_type='application/json')
+            '/api/users', data=data, content_type='application/json')
         # Check if the user has been added
         with app.test_request_context():
             user = Users.query.first()
@@ -73,7 +76,7 @@ class BucketlistTestCase(unittest.TestCase):
         data = json.dumps(
             {"username": self.username, "password": self.password})
         res = self.app.post(
-            '/auth/login', data = data, content_type='application/json')
+            '/auth/login', data=data, content_type='application/json')
         assert res.status_code == 200
         assert 'token' in res.data
         ''' if token is returned then user has been looged in
@@ -94,25 +97,24 @@ class BucketlistTestCase(unittest.TestCase):
             'Content-Type': 'application/json',
             'token': self.__class__.token
         }
-        res = self.app.get('/bucketlists', headers = self.__class__.header)
+        res = self.app.get('/bucketlists', headers=self.__class__.header)
         assert res.status_code == 200
         assert 'Bucketlist' in res.data
 
     def test_2_3_generate_token(self):
-        res = self.app.get("/api/token", headers = self.__class__.header)
+        res = self.app.get("/api/token", headers=self.__class__.header)
         assert 'token' in res.data
-
 
     def test_3_0_bucketlist_addition(self):
         ''' Test addition of bucketlist '''
         data = json.dumps({'name': "Test_list"})
         res = self.app.post(
-            '/bucketlists', data = data, headers = self.__class__.header)
+            '/bucketlists', data=data, headers=self.__class__.header)
         with app.test_request_context():
             bucket = Bucketlist.query.first()
-        redirect = self.app.get(res.location, headers = self.__class__.header)
+        redirect = self.app.get(res.location, headers=self.__class__.header)
         endpoint = self.app.get(
-            "/bucketlists/{0}".format(bucket.id), headers = self.__class__.header)
+            "/bucketlists/{0}".format(bucket.id), headers=self.__class__.header)
         assert res.status_code == 302
         assert redirect.data == endpoint.data
         assert bucket.name == json.loads(data)['name']
@@ -125,9 +127,9 @@ class BucketlistTestCase(unittest.TestCase):
             bucket = Bucketlist.query.first()
         index = bucket.id
         res = self.app.put(
-            '/bucketlists/{0}'.format(index), data = data, headers = self.__class__.header)
+            '/bucketlists/{0}'.format(index), data=data, headers=self.__class__.header)
         req = self.app.get(
-            "/bucketlists/{0}".format(index), headers = self.__class__.header)
+            "/bucketlists/{0}".format(index), headers=self.__class__.header)
         data = json.loads(req.data)['Bucketlist']
         assert res.status_code == 201
         assert name in data[0]
@@ -139,14 +141,14 @@ class BucketlistTestCase(unittest.TestCase):
             bucket = Bucketlist.query.first()
             index = bucket.id
             res = self.app.get("/bucketlists/{0}/items".format(index),
-                                data = data, headers = self.__class__.header)
+                               data=data, headers=self.__class__.header)
             assert res.status_code == 200
             res = self.app.post("/bucketlists/{0}/items".format(index),
-                                data = data, headers = self.__class__.header)
+                                data=data, headers=self.__class__.header)
             assert res.status_code == 201
             items = Bucketitems.query.first()
             res = self.app.get("/bucketlists/{0}/items/{1}".format(index, items.id),
-                               data = data, headers = self.__class__.header)
+                               data=data, headers=self.__class__.header)
             json_data = json.loads(res.data)['items'][0]
             assert item == json_data['name']
 
@@ -158,15 +160,15 @@ class BucketlistTestCase(unittest.TestCase):
             items = Bucketitems.query.first()
             res = self.app.put(
                 "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
-                data = data, headers = self.__class__.header
+                data=data, headers=self.__class__.header
             )
 
             assert res.status_code == 201
             res = self.app.get(
                 "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
-                data = data, headers = self.__class__.header
+                data=data, headers=self.__class__.header
             )
-         
+
             json_data = json.loads(res.data)['items'][0]
             assert item == json_data['name']
 
@@ -175,13 +177,13 @@ class BucketlistTestCase(unittest.TestCase):
             bucket = Bucketlist.query.first()
             items = Bucketitems.query.first()
             res = self.app.delete(
-                                    "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
-                                    headers = self.__class__.header
-                                 )
+                "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
+                headers=self.__class__.header
+            )
             res = self.app.get(
-                                "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
-                                headers = self.__class__.header
-                              )
+                "/bucketlists/{0}/items/{1}".format(bucket.id, items.id),
+                headers=self.__class__.header
+            )
             items = Bucketitems.query.first()
             assert items is None
 
@@ -190,7 +192,7 @@ class BucketlistTestCase(unittest.TestCase):
             listname = fake.name()
             data = json.dumps({'name': listname})
             req = self.app.post(
-                '/bucketlists', data = data, headers = self.__class__.header)
+                '/bucketlists', data=data, headers=self.__class__.header)
             with app.test_request_context():
                 bucket = Bucketlist.query.first()
             for lnum in range(1, 5):
@@ -198,51 +200,49 @@ class BucketlistTestCase(unittest.TestCase):
                 data = json.dumps({'name': items})
                 res = self.app.post(
                     "/bucketlists/{0}/items".format(bucket.id),
-                    data = data, headers = self.__class__.header
+                    data=data, headers=self.__class__.header
                 )
         page = 1
         req = self.app.get(
-                            "/bucketlists?page={0}".format(page),
-                            headers = self.__class__.header
-                          )
+            "/bucketlists?page={0}".format(page),
+            headers=self.__class__.header
+        )
         data = json.loads(req.data)
         data = data['Bucketlist'][0]
         assert 'current_page' in data
         assert data['current_page'] == page
         page = 100
         req = self.app.get(
-                            "/bucketlists?page={0}".format(page),
-                            headers = self.__class__.header
-                          )
+            "/bucketlists?page={0}".format(page),
+            headers=self.__class__.header
+        )
         assert req.status_code == 401
 
     def test_4_1_limit(self):
         req = self.app.get(
-                            "/bucketlists?limit=200",
-                            headers = self.__class__.header
-                          )
+            "/bucketlists?limit=200",
+            headers=self.__class__.header
+        )
 
         assert req.status_code == 200
-  
 
     def test_5_0_bucketlist_delete(self):
         '''Deletes a bucketlist by index'''
         with app.test_request_context():
             bucket = Bucketlist.query.first()
             index = bucket.id
-           
+
             req = self.app.delete(
                 "/bucketlists/{0}".format(index),
-                headers = self.__class__.header
+                headers=self.__class__.header
             )
             bucket = Bucketlist.query.get(index)
             assert bucket is None
             assert req.status_code == 401
 
-
     def test_6_logout(self):
-        req = self.app.get("/auth/logout", headers = self.__class__.header)
-        req = self.app.get("/bucketlists", headers = self.__class__.header)
+        req = self.app.get("/auth/logout", headers=self.__class__.header)
+        req = self.app.get("/bucketlists", headers=self.__class__.header)
         with app.test_request_context():
             user = Users.query.filter_by(username=self.username).first()
         assert user.logged == False

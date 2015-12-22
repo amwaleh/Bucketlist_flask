@@ -97,10 +97,7 @@ class Bucketitems(db.Model):
             'done': self.done
         }
 
-    @property
-    def serialize_many2many(self):
-        ''' Serialize items in the relationship object '''
-        return [list.serialize for list in self.list]
+   
 
 
 class Bucketlist(db.Model):
@@ -124,14 +121,7 @@ class Bucketlist(db.Model):
         self.modified_on = modified_on
 
     # Function to serialize the data that will be retrieved
-    @property
-    def serializelist(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'created_on': self.created_on,
-            'modified_on': self.modified_on
-        }
+    
 
     @property
     def serialize(self):
@@ -144,9 +134,6 @@ class Bucketlist(db.Model):
             'created_by': self.creator
         }
 
-    @property
-    def serializeitem(self):
-        return {'items': self.serialize_many2many}
 
     # Function to Serialize the realtionship
     @property

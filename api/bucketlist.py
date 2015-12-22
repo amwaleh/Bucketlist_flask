@@ -1,6 +1,6 @@
 from flask import json, jsonify, session, Flask, session, \
-    			  escape, render_template, request,\
-   				  session, redirect, url_for, g
+    escape, render_template, request,\
+    session, redirect, url_for, g
 from models import db, Users, Bucketlist, Bucketitems
 from flask.ext.httpauth import HTTPBasicAuth
 from sqlalchemy_paginator import Paginator
@@ -38,7 +38,7 @@ def get_auth_token():
     return jsonify({'token': token.decode('ascii')})
 
 
-@app.route("/bucketlists", methods = ["GET", "POST"])
+@app.route("/bucketlists", methods=["GET", "POST"])
 @auth.login_required
 def bucketlist():
     ''' creates and listing bucketlists'''
@@ -100,41 +100,41 @@ def bucketlist():
             'previous_page': previous_page,
             'bucketlists': all_lists
         }
-        return jsonify(Bucketlist = [pages_view]), 200
+        return jsonify(Bucketlist=[pages_view]), 200
 
 
-@app.route("/bucketlists/<int:id>", methods = ["GET", "PUT", "DELETE"])
+@app.route("/bucketlists/<int:id>", methods=["GET", "PUT", "DELETE"])
 @auth.login_required
 def Update_bucketlist(id):
     # Update or delete bucketlist
     uid = g.user.uid
     if request.method == 'PUT':
-    	newlist = Bucketlist.query.\
+        newlist = Bucketlist.query.\
             filter(
-                    Bucketlist.creator == uid,
-                    Bucketlist.id == id
-                  ).first()
-        data = request.get_json(force = True)
+                Bucketlist.creator == uid,
+                Bucketlist.id == id
+            ).first()
+        data = request.get_json(force=True)
         if 'name' in request.json:
-        	newlist.name = request.json.get('name',)
-      
+            newlist.name = request.json.get('name',)
+
         db.session.commit()
         lists = db.session.query(Bucketlist.name).\
             filter(
-            		Bucketlist.creator == uid,
-                    Bucketlist.id == id
-                  )
-        return jsonify(Bucketlist = [list for list in lists]), 201
+            Bucketlist.creator == uid,
+            Bucketlist.id == id
+        )
+        return jsonify(Bucketlist=[list for list in lists]), 201
 
     if request.method == "DELETE":
         del_list = Bucketlist.query.\
             filter(
-                    Bucketlist.creator == uid,
-                    Bucketlist.id == id
-                  ).first()
+                Bucketlist.creator == uid,
+                Bucketlist.id == id
+            ).first()
         # If ID does not exist Exit
         if del_list is None:
-            return "List does not exist", 404
+            return jsonify({"error": "List does not exist"}), 404
         # Else delete and update the database
         db.session.delete(del_list)
         db.session.commit()
@@ -144,29 +144,23 @@ def Update_bucketlist(id):
         uid = g.user.uid
         # Check if list exists
         username = request.args.get('username')
-        newList = Bucketlist.query.\
-            filter(
-                    Bucketlist.creator == uid,
-                    Bucketlist.id == id
-                  ).first()
-        if newList is None:
-            return jsonify({'error': 'List does not Exist'})
-
         newList = db.session.query(Bucketlist.name, Bucketlist.id).\
             filter(
-            		Bucketlist.creator == uid,
-            		Bucketlist.id == id
-        		  )
-        return jsonify(Bucketlist = [list for list in newList]), 200
+            Bucketlist.creator == uid,
+            Bucketlist.id == id
+        )
+        if newList is None:
+            return jsonify({'error': 'List does not Exist'})
+        return jsonify(Bucketlist=[list for list in newList]), 200
 
 
-@app.route("/bucketlists/<int:id>/items", methods = ["GET", "POST"])
+@app.route("/bucketlists/<int:id>/items", methods=["GET", "POST"])
 @auth.login_required
 def bucketitems(id):
     # Add or List item to Bucketlist
     uid = g.user.uid
     if request.method == 'POST':
-        data = request.get_json(force = True)
+        data = request.get_json(force=True)
         item = request.json.get('name')
         if item is None:
             return jsonify({'error': 'Bucketilist Name is required'}), 403
@@ -176,62 +170,62 @@ def bucketitems(id):
         db.session.commit()
         items = Bucketlist.query.\
             filter(
-                    Bucketlist.creator == uid,
-                    Bucketlist.id == id
-                  )
-        return jsonify(Bucketlist = [item.serialize for item in items]), 201
+                Bucketlist.creator == uid,
+                Bucketlist.id == id
+            )
+        return jsonify(Bucketlist=[item.serialize for item in items]), 201
     if request.method == 'GET':
         items = db.session.query(Bucketlist).\
             filter(
-                    Bucketlist.creator == uid,
-                    Bucketlist.id == id
-                  )
-        return jsonify(Bucketlist = [item.serialize for item in items]), 200
+            Bucketlist.creator == uid,
+            Bucketlist.id == id
+        )
+        return jsonify(Bucketlist=[item.serialize for item in items]), 200
 
 
-@app.route("/bucketlists/<int:id>/items/<int:item_id>", methods = ["GET", "PUT", "DELETE"])
+@app.route("/bucketlists/<int:id>/items/<int:item_id>", methods=["GET", "PUT", "DELETE"])
 @auth.login_required
 def update_items(id, item_id):
-	# Updates items in a bucketlist
-	uid = g.user.uid
-	if request.method == 'PUT':
-		newitem = Bucketitems.query.get(item_id)
-		data = request.get_json(force=True)
-		if  'name' in request.json:
-			newitem.name = request.json.get('name')
-		if 'done' in request.json:
-			newitem.done = request.json.get('done')
-		db.session.commit()
-		return jsonify(items = [i.serializeitem for i in
-		                      db.session.query(Bucketitems).
-		                      filter(
-		                          Bucketlist.creator == uid,
-		                          Bucketlist.id == id,
-		                          Bucketitems.id == item_id
-		                      )]), 201
+        # Updates items in a bucketlist
+    uid = g.user.uid
+    if request.method == 'PUT':
+        newitem = Bucketitems.query.get(item_id)
+        data = request.get_json(force=True)
+        if 'name' in request.json:
+            newitem.name = request.json.get('name')
+        if 'done' in request.json:
+            newitem.done = request.json.get('done')
+        db.session.commit()
+        return jsonify(items=[i.serializeitem for i in
+                              db.session.query(Bucketitems).
+                              filter(
+                                  Bucketlist.creator == uid,
+                                  Bucketlist.id == id,
+                                  Bucketitems.id == item_id
+                              )]), 201
 
-	if request.method == 'DELETE':
-	    del_item = Bucketitems.query.get(item_id)
-	    # if Item does not exist escape
-	    if del_item is None:
-	        return jsonify({'error': 'List does not Exist'}), 404
-	    # Else Delete Item and commit
-	    db.session.delete(del_item)
-	    db.session.commit()
-	    return "item Deleted", 200
+    if request.method == 'DELETE':
+        del_item = Bucketitems.query.get(item_id)
+        # if Item does not exist escape
+        if del_item is None:
+            return jsonify({'error': 'List does not Exist'}), 404
+        # Else Delete Item and commit
+        db.session.delete(del_item)
+        db.session.commit()
+        return jsonify({"info": "item Deleted"}), 200
 
-	if request.method == 'GET':
-	    items = [ i.serializeitem for i in
-	             Bucketitems.query.
-	              filter(
-	                 	 Bucketlist.creator == uid,
-	                 	 Bucketlist.id == id,
-	                 	 Bucketitems.id == item_id
-	             		)
-	            ]
-	    if not items :
-	        return jsonify({'error': 'No Item Found'}), 404
-	    return jsonify(items = items), 200
+    if request.method == 'GET':
+        items = [i.serializeitem for i in
+                 Bucketitems.query.
+                 filter(
+                     Bucketlist.creator == uid,
+                     Bucketlist.id == id,
+                     Bucketitems.id == item_id
+                 )
+                 ]
+        if not items:
+            return jsonify({'error': 'No Item Found'}), 404
+        return jsonify(items=items), 200
 
 
 @app.route("/")
@@ -239,49 +233,53 @@ def index():
     '''index page route index.html'''
     return jsonify({"info": "welcome Please Login "}), 200
 
-@app.route('/api/users', methods = ['POST'])
+
+@app.route('/api/users', methods=['POST'])
 def new_user():
     '''Route to Sign up page'''
     username = request.json.get('username')
     password = request.json.get('password')
     if username is None or password is None:
-        abort(400) 
-    if Users.query.filter_by(username = username).first() is not None:
-        abort(400)  
-    user = Users(username = username)
+        abort(400)
+    if Users.query.filter_by(username=username).first() is not None:
+        abort(400)
+    user = Users(username=username)
     user.hash_password(password)
     db.session.add(user)
     db.session.commit()
     return jsonify({'username': user.username}), 201
 
 # Route to Login Page
-@app.route("/auth/login", methods = ["POST"])
+
+
+@app.route("/auth/login", methods=["POST"])
 def login():
     username = request.json.get('username')
     password = request.json.get('password')
     # try to authenticate with username/password
-    user = Users.query.filter_by(username = username).first()
+    user = Users.query.filter_by(username=username).first()
     if user:
         confirm = user.verify_password(password)
         if confirm:
-        	# Change logged flag to True
+            # Change logged flag to True
             user.logged = True
             db.session.commit()
             g.user = user
             token = g.user.generate_auth_token()
             return jsonify({'token': token.decode('ascii')}), 200
-        return jsonify({"error":"Wrong password"}), 401
-    return jsonify({"error":"User does not exist"}), 401
+        return jsonify({"error": "Wrong password"}), 401
+    return jsonify({"error": "User does not exist"}), 401
 
-@app.route("/auth/logout", methods = ['GET'])
+
+@app.route("/auth/logout", methods=['GET'])
 @auth.login_required
 def logout():
     username = g.user.username
-    user = Users.query.filter_by(username = username).first()
+    user = Users.query.filter_by(username=username).first()
     user.logged = False
     db.session.commit()
-    user = Users.query.filter_by(username = username).first()
-    return jsonify({"info":"Logged out"}), 401
+    user = Users.query.filter_by(username=username).first()
+    return jsonify({"info": "Logged out"}), 401
 
 
 if __name__ == "__main__":
